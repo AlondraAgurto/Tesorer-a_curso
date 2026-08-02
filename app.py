@@ -109,6 +109,7 @@ EXCEL_FILE = "tesoreria_curso.xlsx"
 
 # Lista oficial de alumnos del curso
 LISTA_ALUMNOS = [
+    "Cristian morales",
     "Maximiliano Neira",
     "Victoria Cifuentes",
     "Antonella Enrriquez",
@@ -297,11 +298,24 @@ elif menu == "Visualizar Estado":
         ]
 
         with col_f2:
-          mes_seleccionado = st.selectbox("Mes:", nombres_meses)
+            mes_seleccionado = st.selectbox("Mes:", nombres_meses)
+
+            motivos = ["Todos"] + sorted(
+                df_registros["Motivo"].dropna().unique().tolist()
+            )
+
+            motivo_seleccionado = st.selectbox(
+                "Tema:",
+                motivos
+            )
 
         df_filtrado = df_registros[df_registros["Año"] == ano_seleccionado]
         if mes_seleccionado != "Todos":
           df_filtrado = df_filtrado[df_filtrado["Mes"] == mes_seleccionado]
+        if motivo_seleccionado != "Todos":
+            df_filtrado = df_filtrado[
+                df_filtrado["Motivo"] == motivo_seleccionado
+            ]
 
         total_periodo = df_filtrado["Monto ($)"].sum()
         etiqueta_metrica = (
